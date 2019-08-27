@@ -10,8 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
-    private static final long serialVersionUID = -5625342486695468866L;
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
