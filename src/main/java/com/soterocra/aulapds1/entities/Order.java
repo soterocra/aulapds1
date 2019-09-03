@@ -6,7 +6,9 @@ import com.soterocra.aulapds1.entities.enums.OrderStatus;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
@@ -25,6 +27,9 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
     }
@@ -70,7 +75,9 @@ public class Order implements Serializable {
         this.client = client;
     }
 
-
+    public Set<OrderItem> getItems() {
+        return items;
+    }
 
     @Override
     public boolean equals(Object o) {
