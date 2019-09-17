@@ -1,6 +1,7 @@
 package com.soterocra.aulapds1.services;
 
 import com.soterocra.aulapds1.dto.UserDTO;
+import com.soterocra.aulapds1.dto.UserInsertDTO;
 import com.soterocra.aulapds1.entities.User;
 import com.soterocra.aulapds1.repositories.UserRepository;
 import com.soterocra.aulapds1.services.exceptions.DatabaseException;
@@ -33,8 +34,10 @@ public class UserService {
         return new UserDTO(entity);
     }
 
-    public User insert(User obj) {
-        return repository.save(obj);
+    public UserDTO insert(UserInsertDTO dto) {
+        User entity = dto.toEntity();
+        entity = repository.save(entity);
+        return new UserDTO(entity);
     }
 
     public void delete(Long id) {
