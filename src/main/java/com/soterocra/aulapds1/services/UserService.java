@@ -1,5 +1,6 @@
 package com.soterocra.aulapds1.services;
 
+import com.soterocra.aulapds1.dto.UserDTO;
 import com.soterocra.aulapds1.entities.User;
 import com.soterocra.aulapds1.repositories.UserRepository;
 import com.soterocra.aulapds1.services.exceptions.DatabaseException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -19,13 +21,15 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public List<User> findAll() {
-        return repository.findAll();
+    public List<UserDTO> findAll() {
+        List<User> list = repository.findAll();
+        return list.stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
-    public User findById(Long id) {
+    public UserDTO findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        User entity = obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        return new UserDTO(entity);
     }
 
     public User insert(User obj) {
