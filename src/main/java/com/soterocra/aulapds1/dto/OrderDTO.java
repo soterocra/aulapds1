@@ -1,5 +1,6 @@
 package com.soterocra.aulapds1.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.soterocra.aulapds1.entities.Order;
 import com.soterocra.aulapds1.entities.User;
 import com.soterocra.aulapds1.entities.enums.OrderStatus;
@@ -11,6 +12,8 @@ public class OrderDTO implements Serializable {
     private static final long serialVersionUID = -8277449554919063618L;
 
     private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
     private OrderStatus orderStatus;
     private Long clientId;

@@ -1,16 +1,17 @@
 package com.soterocra.aulapds1.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.soterocra.aulapds1.entities.pk.OrderItemPK;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_order_item")
-public class OrderItem {
+public class OrderItem implements Serializable {
+    private static final long serialVersionUID = 8070036077172266119L;
 
     @EmbeddedId
     private OrderItemPK id = new OrderItemPK();
@@ -27,7 +28,6 @@ public class OrderItem {
         this.price = price;
     }
 
-    @JsonIgnore
     public Order getOrder() {
         return id.getOrder();
     }
