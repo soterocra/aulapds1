@@ -1,5 +1,6 @@
 package com.soterocra.aulapds1.resources;
 
+import com.soterocra.aulapds1.dto.OrderDTO;
 import com.soterocra.aulapds1.entities.Order;
 import com.soterocra.aulapds1.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,15 @@ public class OrderResource {
     private OrderService service;
 
     @GetMapping
-    public ResponseEntity<List<Order>> findAll() {
-        List<Order> list = service.findAll();
+    public ResponseEntity<List<OrderDTO>> findAll() {
+        List<OrderDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> findById(@PathVariable Long id) {
-        Order obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
+        OrderDTO dto = service.findById(id);
+        return ResponseEntity.ok().body(dto);
     }
 
 }
