@@ -7,8 +7,11 @@ import com.soterocra.aulapds1.entities.Category;
 import com.soterocra.aulapds1.entities.Product;
 import com.soterocra.aulapds1.repositories.CategoryRepository;
 import com.soterocra.aulapds1.repositories.ProductRepository;
+import com.soterocra.aulapds1.services.exceptions.DatabaseException;
 import com.soterocra.aulapds1.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +66,16 @@ public class ProductService {
             Category category = categoryRepository.getOne(e.getId());
             entity.getCategories().add(category);
         });
+    }
+
+    public void delete(Long id) {
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     private void updateData(Product entity, ProductCategoriesDTO dto) {
