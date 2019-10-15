@@ -2,7 +2,10 @@ package com.soterocra.aulapds1.dto;
 
 import com.soterocra.aulapds1.entities.Category;
 import com.soterocra.aulapds1.entities.Product;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +13,15 @@ import java.util.List;
 public class ProductCategoriesDTO implements Serializable {
     private static final long serialVersionUID = 4537603330828888023L;
 
+    @NotEmpty(message = "can't be empty")
+    @Length(min = 3, max = 80, message = "length must be between 3 and 80")
     private String name;
+
+    @NotEmpty(message = "can't be empty")
+    @Length(min = 8, message = "length must be min 8")
     private String description;
+
+    @Positive(message = "value must be positive")
     private Double price;
     private String imgUrl;
 
