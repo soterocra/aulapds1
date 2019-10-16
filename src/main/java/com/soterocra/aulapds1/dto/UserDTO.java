@@ -1,15 +1,28 @@
 package com.soterocra.aulapds1.dto;
 
 import com.soterocra.aulapds1.entities.User;
+import com.soterocra.aulapds1.services.validation.UserUpdateValid;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+@UserUpdateValid
 public class UserDTO implements Serializable {
     private static final long serialVersionUID = -7721831167050285337L;
 
     private Long id;
+    @NotEmpty(message = "can't be empty")
+    @Length(min = 5, max = 80, message = "length must be between 5 and 80")
     private String name;
+
+    @NotEmpty(message = "can't be empty")
+    @Email(message = "invalid email")
     private String email;
+
+    @NotEmpty(message = "can't be empty")
+    @Length(min = 8, max = 20, message = "length must be between 5 and 80")
     private String phone;
 
     public UserDTO() {
