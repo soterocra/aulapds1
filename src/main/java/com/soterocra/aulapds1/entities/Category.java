@@ -2,6 +2,7 @@ package com.soterocra.aulapds1.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -18,6 +19,9 @@ public class Category implements Serializable {
 
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
+
+    private Instant createdAt;
+    private Instant updatedAt;
 
     public Category() {
     }
@@ -45,6 +49,26 @@ public class Category implements Serializable {
 
     public Set<Product> getProducts() {
         return products;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        Instant now = Instant.now();
+        updatedAt = now;
+        createdAt = now;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = Instant.now();
     }
 
     @Override
