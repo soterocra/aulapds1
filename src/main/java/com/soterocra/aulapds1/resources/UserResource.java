@@ -2,7 +2,6 @@ package com.soterocra.aulapds1.resources;
 
 import com.soterocra.aulapds1.dto.UserDTO;
 import com.soterocra.aulapds1.dto.UserInsertDTO;
-import com.soterocra.aulapds1.entities.User;
 import com.soterocra.aulapds1.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

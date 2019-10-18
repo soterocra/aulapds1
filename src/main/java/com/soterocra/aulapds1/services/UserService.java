@@ -30,12 +30,16 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private AuthService authService;
+
     public List<UserDTO> findAll() {
         List<User> list = repository.findAll();
-        return list.stream().map(UserDTO::new).collect(Collectors.toList());
+        return list.stream().map(e -> new UserDTO(e)).collect(Collectors.toList());
     }
 
     public UserDTO findById(Long id) {
+        authService.validadeSelfOrAdmin(id);
         Optional<User> obj = repository.findById(id);
         User entity = obj.orElseThrow(() -> new ResourceNotFoundException(id));
         return new UserDTO(entity);
@@ -60,6 +64,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDTO update(Long id, UserDTO dto) {
+        authService.validadeSelfOrAdmin(id);
         try {
             User entity = repository.getOne(id);
             updateData(entity, dto);

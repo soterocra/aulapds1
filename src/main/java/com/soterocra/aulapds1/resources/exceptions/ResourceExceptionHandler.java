@@ -2,6 +2,7 @@ package com.soterocra.aulapds1.resources.exceptions;
 
 import com.soterocra.aulapds1.services.exceptions.DatabaseException;
 import com.soterocra.aulapds1.services.exceptions.JWTAuthenticationException;
+import com.soterocra.aulapds1.services.exceptions.JWTAuthorizationException;
 import com.soterocra.aulapds1.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,14 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> jwtAuthenticationException(JWTAuthenticationException e, HttpServletRequest request) {
         String error = "Authentication error";
         HttpStatus status = HttpStatus.UNAUTHORIZED;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(JWTAuthorizationException.class)
+    public ResponseEntity<StandardError> jwtAuthorizationException(JWTAuthorizationException e, HttpServletRequest request) {
+        String error = "Authorization error";
+        HttpStatus status = HttpStatus.FORBIDDEN;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
