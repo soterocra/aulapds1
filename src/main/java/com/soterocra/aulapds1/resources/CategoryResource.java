@@ -5,6 +5,7 @@ import com.soterocra.aulapds1.entities.Category;
 import com.soterocra.aulapds1.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,6 +31,7 @@ public class CategoryResource {
         return ResponseEntity.ok().body(dto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
         CategoryDTO newDto = service.insert(dto);
@@ -37,12 +39,14 @@ public class CategoryResource {
         return ResponseEntity.created(uri).body(newDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto) {
         dto = service.update(id, dto);
