@@ -1,6 +1,7 @@
 package com.soterocra.aulapds1.resources.exceptions;
 
 import com.soterocra.aulapds1.services.exceptions.DatabaseException;
+import com.soterocra.aulapds1.services.exceptions.JWTAuthenticationException;
 import com.soterocra.aulapds1.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,14 @@ public class ResourceExceptionHandler {
 
         e.getBindingResult().getFieldErrors().forEach(fieldError -> err.addError(fieldError.getField(), fieldError.getDefaultMessage()));
 
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(JWTAuthenticationException.class)
+    public ResponseEntity<StandardError> jwtAuthenticationException(JWTAuthenticationException e, HttpServletRequest request) {
+        String error = "Authentication error";
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
