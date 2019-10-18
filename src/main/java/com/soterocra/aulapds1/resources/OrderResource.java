@@ -1,5 +1,6 @@
 package com.soterocra.aulapds1.resources;
 
+import com.soterocra.aulapds1.dto.CategoryDTO;
 import com.soterocra.aulapds1.dto.OrderDTO;
 import com.soterocra.aulapds1.dto.OrderItemDTO;
 import com.soterocra.aulapds1.entities.Order;
@@ -59,4 +60,10 @@ public class OrderResource {
         return ResponseEntity.created(uri).body(orderDTO);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<OrderDTO> update(@PathVariable Long id, @RequestBody OrderDTO dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok().body(dto);
+    }
 }
