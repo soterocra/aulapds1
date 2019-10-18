@@ -1,6 +1,7 @@
 package com.soterocra.aulapds1.resources;
 
 import com.soterocra.aulapds1.dto.CredentialsDTO;
+import com.soterocra.aulapds1.dto.EmailDTO;
 import com.soterocra.aulapds1.dto.TokenDTO;
 import com.soterocra.aulapds1.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,12 @@ public class AuthResource {
     public ResponseEntity<TokenDTO> refresh() {
         TokenDTO tokenDTO = service.refreshToken();
         return ResponseEntity.ok().body(tokenDTO);
+    }
+
+    @PostMapping(value = "/forgot")
+    public ResponseEntity<Void> forgot(@RequestBody EmailDTO dto) {
+        service.sendNewPassword(dto.getEmail());
+        return ResponseEntity.noContent().build();
     }
 
 }
