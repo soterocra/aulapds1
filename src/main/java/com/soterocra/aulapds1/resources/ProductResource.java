@@ -1,5 +1,6 @@
 package com.soterocra.aulapds1.resources;
 
+import com.soterocra.aulapds1.dto.CategoryDTO;
 import com.soterocra.aulapds1.dto.ProductCategoriesDTO;
 import com.soterocra.aulapds1.dto.ProductDTO;
 import com.soterocra.aulapds1.services.ProductService;
@@ -77,4 +78,27 @@ public class ProductResource {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping(value = "/{id}/addcategory")
+    public ResponseEntity<Void> addCategory(@PathVariable Long id, @RequestBody CategoryDTO dto) {
+        service.addCategory(id, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping(value = "/{id}/removecategory")
+    public ResponseEntity<Void> removeCategory(@PathVariable Long id, @RequestBody CategoryDTO dto) {
+        service.removeCategory(id, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping(value = "/{id}/setcategories")
+    public ResponseEntity<Void> setCategories(@PathVariable Long id, @RequestBody List<CategoryDTO> dto) {
+        service.setCategories(id, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
