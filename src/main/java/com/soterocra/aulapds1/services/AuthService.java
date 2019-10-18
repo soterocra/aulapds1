@@ -2,6 +2,7 @@ package com.soterocra.aulapds1.services;
 
 import com.soterocra.aulapds1.dto.CredentialsDTO;
 import com.soterocra.aulapds1.dto.TokenDTO;
+import com.soterocra.aulapds1.entities.Order;
 import com.soterocra.aulapds1.entities.User;
 import com.soterocra.aulapds1.repositories.UserRepository;
 import com.soterocra.aulapds1.security.JWTUtil;
@@ -50,9 +51,16 @@ public class AuthService {
         }
     }
 
-    public void validadeSelfOrAdmin(Long userId) {
+    public void validateSelfOrAdmin(Long userId) {
         User user = authenticated();
-        if (user == null || (!user.getId().equals(userId) && !hasRole(user, "ROLE_ADMIN"))) {
+        if (user == null || (!user.getId().equals(userId) && !user.hasRole( "ROLE_ADMIN"))) {
+            throw new JWTAuthorizationException("Access denied");
+        }
+    }
+
+    public void validateOwnOrderOrAdmin(Order order) {
+        User user = authenticated();
+        if (user == null || (!user.getId().equals(order.getClient().getId()) && !user.hasRole( "ROLE_ADMIN"))) {
             throw new JWTAuthorizationException("Access denied");
         }
     }

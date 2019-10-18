@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDTO findById(Long id) {
-        authService.validadeSelfOrAdmin(id);
+        authService.validateSelfOrAdmin(id);
         Optional<User> obj = repository.findById(id);
         User entity = obj.orElseThrow(() -> new ResourceNotFoundException(id));
         return new UserDTO(entity);
@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDTO update(Long id, UserDTO dto) {
-        authService.validadeSelfOrAdmin(id);
+        authService.validateSelfOrAdmin(id);
         try {
             User entity = repository.getOne(id);
             updateData(entity, dto);
