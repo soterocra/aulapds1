@@ -65,6 +65,11 @@ public class AuthService {
         }
     }
 
+    public TokenDTO refreshToken() {
+        User user = authenticated();
+        return new TokenDTO(user.getEmail(), jwtUtil.generateToken(user.getEmail()));
+    }
+
     private boolean hasRole(User user, String roleName) {
         UserDetails userDetails = (UserDetails) user;
         List<String> list = userDetails.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList());
