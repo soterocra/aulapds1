@@ -2,7 +2,9 @@ package com.soterocra.aulapds1.services;
 
 import com.soterocra.aulapds1.dto.CategoryDTO;
 import com.soterocra.aulapds1.entities.Category;
+import com.soterocra.aulapds1.entities.Product;
 import com.soterocra.aulapds1.repositories.CategoryRepository;
+import com.soterocra.aulapds1.repositories.ProductRepository;
 import com.soterocra.aulapds1.services.exceptions.DatabaseException;
 import com.soterocra.aulapds1.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +24,9 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository repository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<CategoryDTO> findAll() {
         List<Category> list = repository.findAll();
@@ -65,4 +71,10 @@ public class CategoryService {
         entity.setName(dto.getName());
     }
 
+    @Transactional(readOnly = true)
+    public List<CategoryDTO> findByProduct(Long productId) {
+        Product product = productRepository.getOne(productId);
+        Set<Category> set = product.getCategories();
+        return set.stream().map(CategoryDTO::new).collect(Collectors.toList());
+    }
 }
